@@ -1,0 +1,112 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<ProjectMVC_Ecommerce.Models.TinDang>
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Danh sách Post " + CurrentPage;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item" href="#">Apps</a>
+            <a class="breadcrumb-item" href="#">E-commerce</a>
+            <span class="breadcrumb-item active">Customers List : page @CurrentPage</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+                <div class="d-md-flex">
+                    <div class="m-b-10 m-r-15">
+                        <select class="custom-select" style="min-width: 180px;">
+                            <option selected>Catergory</option>
+                            <option value="all">All</option>
+                            <option value="homeDeco">Home Decoration</option>
+                            <option value="eletronic">Eletronic</option>
+                            <option value="jewellery">Jewellery</option>
+                        </select>
+                    </div>
+                    <div class="m-b-10">
+                        <select class="custom-select" style="min-width: 180px;">
+                            <option selected>Status</option>
+                            <option value="all">All</option>
+                            <option value="inStock">In Stock </option>
+                            <option value="outOfStock">Out of Stock</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-right">
+                <a class="btn btn-primary" asp-controller="AdminTinDangs" asp-action="Create">
+                    <i class="anticon anticon-plus-circle m-r-5"></i>
+                    <span>Add News</span>
+                </a>
+            </div>
+
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>PostTitle</th>
+                        <th>CretedDate</th>
+                        <th>Published</th>
+                        <th>Hot</th>
+                        <th>Newfeed</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.PostId</td>
+                                <td>@item.Title</td>
+                                <td>@item.CreatedDate</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="badge @(item.Published ? "badge-success" : "badge-dark") badge-dot m-r-10"></div>
+                                        <div>Published</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="badge @(item.IsNewfeed ? "badge-success" : "badge-dark") badge-dot m-r-10"></div>
+                                        <div>IsNewfeed</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="badge @(item.IsHot ? "badge-success" : "badge-dark") badge-dot m-r-10"></div>
+                                        <div>IsHot</div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <a asp-area="Admin" asp-controller="AdminTinDangs" asp-action="Details" asp-route-id="@item.PostId" class="btn btn-primary btn-tone m-r-5">View</a>
+                                    <a asp-area="Admin" asp-controller="AdminTinDangs" asp-action="Edit" asp-route-id="@item.PostId" class="btn btn-secondary btn-tone m-r-5">Edit</a>
+                                    <a asp-area="Admin" asp-controller="AdminTinDangs" asp-action="Delete" asp-route-id="@item.PostId" class="btn btn-success btn-tone m-r-5">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-area="Admin" asp-controller="AdminTinDangs" asp-action="Index" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
